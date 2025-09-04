@@ -1,0 +1,55 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sigma Life for Employers — Smart Health, Simplified</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Inter+Tight:wght@600;700;800&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'sigma-midnight': '#0E1220',
+              'graphite': '#1A2233',
+              'cloud': '#F5F7FB',
+              'neon-cyan': '#25F3E6',
+              'ocean-teal': '#19B3A6',
+              'pulse-violet': '#7755FF',
+              'calm-mint': '#C7F7EE',
+              'warm-amber': '#FFC155',
+              'vital-red': '#F04438',
+            },
+            fontFamily: {
+              sans: ['Inter', 'system-ui', 'sans-serif'],
+              tight: ['Inter Tight', 'system-ui', 'sans-serif'],
+            },
+            backgroundImage: {
+              'sigma-pulse': 'linear-gradient(135deg, #19B3A6 0%, #25F3E6 50%, #7755FF 100%)',
+            }
+          }
+        }
+      }
+    </script>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.1.1/",
+    "react": "https://aistudiocdn.com/react@^19.1.1",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/"
+  }
+}
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+    <!-- Plausible Analytics Placeholder -->
+    <script defer data-domain="YOUR_PLAUSIBLE_DOMAIN" src="https://plausible.io/js/script.js"></script>
+  </body>
+</html>
