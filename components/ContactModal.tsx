@@ -1,92 +1,111 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { ModalType, ContactFormData, WaitlistFormData, FormErrors, SubmissionStatus } from '../types';
 import { submitContactForm, submitWaitlistForm } from '../services/api';
+import { SecureInput } from './SecureInput';
+import { useSecureForm } from '../hooks/useSecureForm';
+import { SecurityUtils } from '../utils/security';
 
 interface ContactModalProps {
   initialMode: ModalType;
   onClose: () => void;
 }
 
-const formInputClasses = "w-full bg-graphite border border-white/20 rounded-lg px-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neon-cyan transition";
 const formLabelClasses = "block text-sm font-medium text-gray-300 mb-1";
 
 export const ContactModal: React.FC<ContactModalProps> = ({ initialMode, onClose }) => {
   const [mode, setMode] = useState<ModalType>(initialMode);
-  const [contactData, setContactData] = useState<ContactFormData>({
-    fullName: '', email: '', company: '', companySize: '', role: '', interests: [], message: '', consent: false
+  
+  // Contact form with security
+  const contactForm = useSecureForm<ContactFormData>({
+    initialValues: {
+      fullName: '', email: '', company: '', companySize: '', role: '', interests: [], message: '', consent: false
+    },
+    validationSchema: {
+      fullName: (value) => ({
+        isValid: value.trim().length > 0,
+        error: value.trim().length === 0 ? 'Full name is required' : undefined
+      }),
+      email: (value) => ({
+        isValid: SecurityUtils.isValidEmail(value),
+        error: !value ? 'Business email is required' : !SecurityUtils.isValidEmail(value) ? 'Invalid email format' : undefined
+      }),
+      company: (value) => ({
+        isValid: value.trim().length > 0,
+        error: value.trim().length === 0 ? 'Company name is required' : undefined
+      }),
+      companySize: (value) => ({
+        isValid: value.length > 0,
+        error: value.length === 0 ? 'Please select a company size' : undefined
+      }),
+      consent: (value) => ({
+        isValid: value === true,
+        error: !value ? 'You must agree to the terms' : undefined
+      })
+    },
+    onSubmit: async (values) => {
+      await submitContactForm(values);
+      setStatus('success');
+    },
+    enableRateLimit: true,
+    rateLimitIdentifier: 'contact_form'
   });
-  const [waitlistData, setWaitlistData] = useState<WaitlistFormData>({ email: '' });
-  const [errors, setErrors] = useState<FormErrors>({});
-  const [status, setStatus] = useState<SubmissionStatus>('idle');
-  const [errorMessage, setErrorMessage] = useState('');
 
-  // FIX: Correctly handle type narrowing for different input elements.
-  // The original implementation's destructuring of the 'type' property confused TypeScript's type inference,
-  // preventing it from safely identifying checkbox inputs. This version uses a robust type guard.
-  const handleContactChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const target = e.target;
-    const name = target.name;
-    if (target instanceof HTMLInputElement && target.type === 'checkbox') {
-        setContactData(prev => ({ ...prev, [name]: target.checked }));
-    } else {
-        setContactData(prev => ({ ...prev, [name]: target.value }));
-    }
-  };
+  // Waitlist form with security
+  const waitlistForm = useSecureForm<WaitlistFormData>({
+    initialValues: { email: '' },
+    validationSchema: {
+      email: (value) => ({
+        isValid: SecurityUtils.isValidEmail(value),
+        error: !value ? 'Email is required' : !SecurityUtils.isValidEmail(value) ? 'Invalid email format' : undefined
+      })
+    },
+    onSubmit: async (values) => {
+      await submitWaitlistForm(values);
+      setStatus('success');
+    },
+    enableRateLimit: true,
+    rateLimitIdentifier: 'waitlist_form'
+  });
+
+  const [status, setStatus] = useState<SubmissionStatus>('idle');
 
   const handleInterestChange = (interest: string) => {
-    setContactData(prev => {
-      const newInterests = prev.interests.includes(interest)
-        ? prev.interests.filter(i => i !== interest)
-        : [...prev.interests, interest];
-      return { ...prev, interests: newInterests };
-    });
+    const currentInterests = contactForm.values.interests;
+    const newInterests = currentInterests.includes(interest)
+      ? currentInterests.filter(i => i !== interest)
+      : [...currentInterests, interest];
+    contactForm.setValue('interests', newInterests);
   };
 
-  const validateContactForm = useCallback(() => {
-    const newErrors: FormErrors = {};
-    if (!contactData.fullName.trim()) newErrors.fullName = 'Full name is required';
-    if (!contactData.email.trim()) newErrors.email = 'Business email is required';
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactData.email)) newErrors.email = 'Invalid email format';
-    if (!contactData.company.trim()) newErrors.company = 'Company name is required';
-    if (!contactData.companySize) newErrors.companySize = 'Please select a company size';
-    if (!contactData.consent) newErrors.consent = 'You must agree to the terms';
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  }, [contactData]);
-  
-  const validateWaitlistForm = useCallback(() => {
-    const newErrors: FormErrors = {};
-    if (!waitlistData.email.trim()) newErrors.waitlistEmail = 'Email is required';
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(waitlistData.email)) newErrors.waitlistEmail = 'Invalid email format';
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  }, [waitlistData]);
-
   const handleContactSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!validateContactForm()) return;
     setStatus('loading');
-    setErrorMessage('');
     try {
-      await submitContactForm(contactData);
-      setStatus('success');
+      await contactForm.handleSubmit(e);
+      if (contactForm.isValid && !contactForm.isSubmitting) {
+        setStatus('success');
+      }
     } catch (err) {
       setStatus('error');
-      setErrorMessage(err instanceof Error ? err.message : 'An unknown error occurred.');
+    } finally {
+      if (contactForm.isSubmitting) {
+        setStatus('idle');
+      }
     }
   };
   
   const handleWaitlistSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!validateWaitlistForm()) return;
     setStatus('loading');
-    setErrorMessage('');
     try {
-      await submitWaitlistForm(waitlistData);
-      setStatus('success');
+      await waitlistForm.handleSubmit(e);
+      if (waitlistForm.isValid && !waitlistForm.isSubmitting) {
+        setStatus('success');
+      }
     } catch (err) {
       setStatus('error');
-      setErrorMessage(err instanceof Error ? err.message : 'An unknown error occurred.');
+    } finally {
+      if (waitlistForm.isSubmitting) {
+        setStatus('idle');
+      }
     }
   };
   
@@ -115,37 +134,75 @@ export const ContactModal: React.FC<ContactModalProps> = ({ initialMode, onClose
                 {mode === 'contact' ? (
                     <form onSubmit={handleContactSubmit} className="p-6 max-h-[70vh] overflow-y-auto space-y-4">
                         <div>
-                            <label htmlFor="fullName" className={formLabelClasses}>Full Name</label>
-                            <input type="text" id="fullName" name="fullName" value={contactData.fullName} onChange={handleContactChange} className={formInputClasses} />
-                            {errors.fullName && <p className="text-vital-red text-xs mt-1">{errors.fullName}</p>}
+                            <SecureInput
+                              label="Full Name"
+                              type="text"
+                              value={contactForm.values.fullName}
+                              onChange={(value, isValid) => {
+                                contactForm.setValue('fullName', value);
+                                if (!isValid) contactForm.setFieldTouched('fullName');
+                              }}
+                              error={contactForm.touched.fullName ? contactForm.errors.fullName : undefined}
+                              required
+                              maxLength={100}
+                            />
                         </div>
                         <div>
-                            <label htmlFor="email" className={formLabelClasses}>Business Email</label>
-                            <input type="email" id="email" name="email" value={contactData.email} onChange={handleContactChange} className={formInputClasses} />
-                             {errors.email && <p className="text-vital-red text-xs mt-1">{errors.email}</p>}
+                            <SecureInput
+                              label="Business Email"
+                              type="email"
+                              value={contactForm.values.email}
+                              onChange={(value, isValid) => {
+                                contactForm.setValue('email', value);
+                                if (!isValid) contactForm.setFieldTouched('email');
+                              }}
+                              validation="email"
+                              error={contactForm.touched.email ? contactForm.errors.email : undefined}
+                              required
+                              maxLength={254}
+                            />
                         </div>
                         <div>
-                            <label htmlFor="company" className={formLabelClasses}>Company</label>
-                            <input type="text" id="company" name="company" value={contactData.company} onChange={handleContactChange} className={formInputClasses} />
-                            {errors.company && <p className="text-vital-red text-xs mt-1">{errors.company}</p>}
+                            <SecureInput
+                              label="Company"
+                              type="text"
+                              value={contactForm.values.company}
+                              onChange={(value, isValid) => {
+                                contactForm.setValue('company', value);
+                                if (!isValid) contactForm.setFieldTouched('company');
+                              }}
+                              error={contactForm.touched.company ? contactForm.errors.company : undefined}
+                              required
+                              maxLength={100}
+                            />
                         </div>
                         <div>
                             <label htmlFor="companySize" className={formLabelClasses}>Company Size</label>
-                            <select id="companySize" name="companySize" value={contactData.companySize} onChange={handleContactChange} className={formInputClasses}>
+                            <select 
+                              id="companySize" 
+                              value={contactForm.values.companySize} 
+                              onChange={(e) => {
+                                contactForm.setValue('companySize', e.target.value);
+                                contactForm.setFieldTouched('companySize');
+                              }}
+                              className="w-full bg-graphite border border-white/20 rounded-lg px-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neon-cyan transition"
+                            >
                                 <option value="">Select an option</option>
                                 <option value="50-249">50-249 employees</option>
                                 <option value="250-999">250-999 employees</option>
                                 <option value="1k-5k">1,000-5,000 employees</option>
                                 <option value="5k+">5,000+ employees</option>
                             </select>
-                            {errors.companySize && <p className="text-vital-red text-xs mt-1">{errors.companySize}</p>}
+                            {contactForm.touched.companySize && contactForm.errors.companySize && (
+                              <p className="text-vital-red text-xs mt-1">{contactForm.errors.companySize}</p>
+                            )}
                         </div>
                         <div className="pt-2">
                              <label className={formLabelClasses}>Interests</label>
                              <div className="grid grid-cols-2 gap-2 mt-2">
                                 {["Pilot", "Bulk order", "Integrations", "Security review"].map(interest => (
                                     <label key={interest} className="flex items-center space-x-2 text-sm text-gray-300 cursor-pointer">
-                                        <input type="checkbox" checked={contactData.interests.includes(interest)} onChange={() => handleInterestChange(interest)} className="form-checkbox bg-graphite border-white/20 text-ocean-teal focus:ring-neon-cyan" />
+                                        <input type="checkbox" checked={contactForm.values.interests.includes(interest)} onChange={() => handleInterestChange(interest)} className="form-checkbox bg-graphite border-white/20 text-ocean-teal focus:ring-neon-cyan" />
                                         <span>{interest}</span>
                                     </label>
                                 ))}
@@ -153,34 +210,69 @@ export const ContactModal: React.FC<ContactModalProps> = ({ initialMode, onClose
                         </div>
                          <div>
                             <label htmlFor="message" className={formLabelClasses}>Message (Optional)</label>
-                            <textarea id="message" name="message" value={contactData.message} onChange={handleContactChange} rows={3} className={formInputClasses}></textarea>
+                            <textarea 
+                              id="message" 
+                              value={contactForm.values.message} 
+                              onChange={(e) => contactForm.setValue('message', e.target.value)}
+                              rows={3} 
+                              maxLength={1000}
+                              className="w-full bg-graphite border border-white/20 rounded-lg px-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neon-cyan transition"
+                            />
+                            <div className="text-xs text-gray-500 mt-1 text-right">
+                              {contactForm.values.message.length}/1000
+                            </div>
                         </div>
                          <div className="pt-2">
                             <label className="flex items-center space-x-2 text-sm text-gray-400">
-                                <input type="checkbox" name="consent" checked={contactData.consent} onChange={handleContactChange} className="form-checkbox bg-graphite border-white/20 text-ocean-teal focus:ring-neon-cyan"/>
+                                <input 
+                                  type="checkbox" 
+                                  checked={contactForm.values.consent} 
+                                  onChange={(e) => {
+                                    contactForm.setValue('consent', e.target.checked);
+                                    contactForm.setFieldTouched('consent');
+                                  }}
+                                  className="form-checkbox bg-graphite border-white/20 text-ocean-teal focus:ring-neon-cyan"
+                                />
                                 <span>I agree to Sigma Life's terms and privacy policy.</span>
                             </label>
-                             {errors.consent && <p className="text-vital-red text-xs mt-1">{errors.consent}</p>}
+                             {contactForm.touched.consent && contactForm.errors.consent && (
+                               <p className="text-vital-red text-xs mt-1">{contactForm.errors.consent}</p>
+                             )}
                         </div>
-                        <button type="submit" disabled={status === 'loading'} className="w-full bg-ocean-teal text-white font-semibold py-2.5 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed">
-                          {status === 'loading' ? 'Submitting...' : 'Submit Inquiry'}
+                        <button type="submit" disabled={status === 'loading' || contactForm.isSubmitting} className="w-full bg-ocean-teal text-white font-semibold py-2.5 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed">
+                          {(status === 'loading' || contactForm.isSubmitting) ? 'Submitting...' : 'Submit Inquiry'}
                         </button>
+                        {contactForm.submitError && (
+                          <p className="text-vital-red text-xs text-center">{contactForm.submitError}</p>
+                        )}
                     </form>
                 ) : (
                     <form onSubmit={handleWaitlistSubmit} className="p-6 space-y-4">
                         <h3 className="text-lg font-bold text-white text-center">Join the Enterprise Waitlist</h3>
                         <p className="text-sm text-gray-400 text-center">Be the first to know when we expand our enterprise offerings.</p>
                          <div>
-                            <label htmlFor="waitlistEmail" className={formLabelClasses}>Email Address</label>
-                            <input type="email" id="waitlistEmail" value={waitlistData.email} onChange={(e) => setWaitlistData({email: e.target.value})} className={formInputClasses} />
-                            {errors.waitlistEmail && <p className="text-vital-red text-xs mt-1">{errors.waitlistEmail}</p>}
+                            <SecureInput
+                              label="Email Address"
+                              type="email"
+                              value={waitlistForm.values.email}
+                              onChange={(value, isValid) => {
+                                waitlistForm.setValue('email', value);
+                                if (!isValid) waitlistForm.setFieldTouched('email');
+                              }}
+                              validation="email"
+                              error={waitlistForm.touched.email ? waitlistForm.errors.email : undefined}
+                              required
+                              maxLength={254}
+                            />
                         </div>
-                        <button type="submit" disabled={status === 'loading'} className="w-full bg-ocean-teal text-white font-semibold py-2.5 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed">
-                          {status === 'loading' ? 'Joining...' : 'Join Waitlist'}
+                        <button type="submit" disabled={status === 'loading' || waitlistForm.isSubmitting} className="w-full bg-ocean-teal text-white font-semibold py-2.5 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed">
+                          {(status === 'loading' || waitlistForm.isSubmitting) ? 'Joining...' : 'Join Waitlist'}
                         </button>
+                        {waitlistForm.submitError && (
+                          <p className="text-vital-red text-xs text-center">{waitlistForm.submitError}</p>
+                        )}
                     </form>
                 )}
-                 {status === 'error' && <div className="p-6 pt-0 text-center text-vital-red text-sm">{errorMessage}</div>}
             </>
          )}
          <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-white transition">
