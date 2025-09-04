@@ -1,7 +1,5 @@
 
 import React, { useState, useEffect } from 'react';
-import { SecurityProvider } from './contexts/SecurityContext';
-import { SecurityBoundary } from './components/SecurityBoundary';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { WhatItTracks } from './components/WhatItTracks';
@@ -13,6 +11,8 @@ import { CaseStudies } from './components/CaseStudies';
 import { CtaSection } from './components/CtaSection';
 import { Footer } from './components/Footer';
 import { ContactModal } from './components/ContactModal';
+import { SecurityProvider } from './contexts/SecurityContext';
+import { SecurityBoundary } from './components/SecurityBoundary';
 import { ModalType } from './types';
 
 const App: React.FC = () => {

@@ -16,20 +16,15 @@ export class SecurityBoundary extends Component<Props, State> {
   };
 
   public static getDerivedStateFromError(error: Error): State {
-    // Log security-related errors without exposing sensitive information
-    if (process.env.NODE_ENV === 'development') {
-      console.error('Security boundary caught an error:', error);
-    }
+    // Log errors in a safe way
+    console.warn('Application error caught by security boundary');
     
     return { hasError: true, error };
   }
 
   public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    // In production, you would send this to your logging service
-    // but never expose sensitive information to the client
-    if (process.env.NODE_ENV === 'development') {
-      console.error('Security boundary error details:', { error, errorInfo });
-    }
+    // Log for debugging but don't block the application
+    console.warn('Error boundary triggered:', error.message);
   }
 
   public render() {

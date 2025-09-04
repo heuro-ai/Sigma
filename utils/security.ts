@@ -33,9 +33,14 @@ export class SecurityUtils {
 
   // Content Security Policy nonce generator
   static generateNonce(): string {
-    const array = new Uint8Array(16);
-    crypto.getRandomValues(array);
-    return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+    try {
+      const array = new Uint8Array(16);
+      crypto.getRandomValues(array);
+      return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+    } catch (error) {
+      // Fallback for environments where crypto is not available
+      return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    }
   }
 
   // Rate limiting helper
