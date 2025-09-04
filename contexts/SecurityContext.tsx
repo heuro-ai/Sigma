@@ -63,7 +63,6 @@ export const SecurityProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           user: null,
           sessionId: null
         }));
-        }
       }
     };
 
