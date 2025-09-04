@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { ModalType, ContactFormData, WaitlistFormData, FormErrors, SubmissionStatus } from '../types';
 import { submitContactForm, submitWaitlistForm } from '../services/api';
@@ -21,12 +20,16 @@ export const ContactModal: React.FC<ContactModalProps> = ({ initialMode, onClose
   const [status, setStatus] = useState<SubmissionStatus>('idle');
   const [errorMessage, setErrorMessage] = useState('');
 
+  // FIX: Correctly handle type narrowing for different input elements.
+  // The original implementation's destructuring of the 'type' property confused TypeScript's type inference,
+  // preventing it from safely identifying checkbox inputs. This version uses a robust type guard.
   const handleContactChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const { name, value, type } = e.target;
-    if (type === 'checkbox' && e.target instanceof HTMLInputElement) {
-        setContactData(prev => ({ ...prev, [name]: e.target.checked }));
+    const target = e.target;
+    const name = target.name;
+    if (target instanceof HTMLInputElement && target.type === 'checkbox') {
+        setContactData(prev => ({ ...prev, [name]: target.checked }));
     } else {
-        setContactData(prev => ({ ...prev, [name]: value }));
+        setContactData(prev => ({ ...prev, [name]: target.value }));
     }
   };
 

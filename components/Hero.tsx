@@ -30,10 +30,10 @@ export const Hero: React.FC<HeroProps> = ({ onContactClick, onWaitlistClick }) =
                 Contact Sales
               </button>
               <button
-                onClick={onWaitlistClick}
+                onClick={onContactClick}
                 className="w-full sm:w-auto bg-graphite text-white font-semibold py-3 px-8 rounded-lg border border-white/20 hover:bg-white/10 transition-colors"
               >
-                Join Enterprise Waitlist
+                Request a Demo
               </button>
             </div>
             <div className="mt-16 text-sm text-gray-400">
