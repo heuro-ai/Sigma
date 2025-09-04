@@ -64,7 +64,7 @@ export const SecurityProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           sessionId: null
         }));
       }
-    };
+    }
 
     initSecurity();
   }, []);
