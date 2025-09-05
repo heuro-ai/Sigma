@@ -13,7 +13,6 @@ const faqs = [
     category: "product"
   },
   {
-    answer: "Sigma Life prioritizes data privacy and security through multiple layers of protection. All employee health data is encrypted in transit and at rest using industry-leading protocols. We maintain strict GDPR compliance and Indian data residency requirements. Individual employee data is NEVER shared with employers - only anonymized, aggregated insights are provided to organizations. We're SOC 2 Type II compliant (in progress) and offer BAA evaluation for qualified enterprise partners. Employees maintain full control over their personal health information.",
     category: "privacy"
   },
   {
