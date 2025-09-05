@@ -13,11 +13,11 @@ const faqs = [
     category: "product"
   },
   {
+    question: "How does Sigma Life protect employee privacy and data security?",
     answer: "Sigma Life prioritizes data privacy and security through multiple layers of protection. All employee health data is encrypted in transit and at rest using industry-leading protocols. We maintain strict GDPR compliance and Indian data residency requirements. Individual employee data is NEVER shared with employers - only anonymized, aggregated insights are provided to organizations. We're SOC 2 Type II compliant (in progress) and offer BAA evaluation for qualified enterprise partners. Employees maintain full control over their personal health information.",
     category: "privacy"
   },
-              <div className="text-gray-300">Healthcare Cost Reduction</div>
-              <div className="text-sm text-gray-500 mt-1">Average ₹10,000 savings per employee</div>
+  {
     question: "How does Sigma Life compare to Oura, Ultrahuman, and boAt smart rings?",
     answer: "Sigma Life specifically focuses on B2B corporate wellness, unlike consumer-focused competitors. Key advantages: (1) India-based with local data residency and compliance, (2) B2B-specific features like productivity analytics and workforce insights, (3) Competitive pricing at ₹4,999 with no hidden fees, (4) Enterprise dashboard with admin controls, (5) Integration with Indian HR systems, (6) Dedicated corporate support and bulk provisioning. While Oura and Ultrahuman focus on individual consumers, Sigma Life is purpose-built for Indian corporate wellness programs.",
     category: "comparison"
