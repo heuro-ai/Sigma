@@ -1,83 +1,213 @@
-import React from 'react';
-import { Link } from './Router';
-import { Logo } from './IconComponents';
+import React, { useState } from 'react';
+import { Header } from '../Header';
+import { Footer } from '../Footer';
+import { WhatsAppFloat } from '../WhatsAppFloat';
+import { StickyCTA } from '../StickyCTA';
+import { ContactModal } from '../ContactModal';
+import { ModalType } from '../../types';
 
-export const Footer: React.FC = () => {
+const faqs = [
+  {
+    question: "What is Sigma Life Smart Ring and how does it work for B2B corporate wellness?",
+    answer: "Sigma Life Smart Ring is India's leading B2B corporate wellness platform using advanced wearable device technology specifically designed for enterprise employee health programs. The smart ring continuously monitors key employee health metrics including heart rate, heart rate variability (HRV), sleep patterns, activity levels, and stress management indicators through dual-chip sensors with 6+ days battery life. Our platform provides real-time wellness insights to employees while delivering anonymized, aggregated workforce analytics to employers for data-driven wellness program optimization. Unlike consumer rings, Sigma Life is purpose-built for Indian corporate environments with complete GDPR compliance and local data residency.",
+    category: "product"
+  },
+  {
+    category: "privacy"
+  },
+  {
+    question: "How does Sigma Life compare to Oura, Ultrahuman, and boAt smart rings?",
+    answer: "Sigma Life specifically focuses on B2B corporate wellness, unlike consumer-focused competitors. Key advantages: (1) India-based with local data residency and compliance, (2) B2B-specific features like productivity analytics and workforce insights, (3) Competitive pricing at ₹4,999 with no hidden fees, (4) Enterprise dashboard with admin controls, (5) Integration with Indian HR systems, (6) Dedicated corporate support and bulk provisioning. While Oura and Ultrahuman focus on individual consumers, Sigma Life is purpose-built for Indian corporate wellness programs.",
+    category: "comparison"
+  },
+  {
+    question: "What specific health metrics does the smart ring track?",
+    answer: "The Sigma Life Smart Ring tracks comprehensive wellness metrics: (1) Heart Rate & HRV for cardiovascular health assessment, (2) Sleep Patterns including duration, quality, and sleep stages (REM, deep, light), (3) Activity Levels measuring steps, distance, and calories burned, (4) Stress Management through physiological signal analysis, (5) Recovery & Readiness scores, (6) Productivity Index correlating wellness with performance patterns. All metrics provide trend insights and early pattern signals for proactive health management.",
+    category: "health"
+  },
+  {
+    question: "How does Indian law and compliance shape Sigma Life's approach?",
+    answer: "Sigma Life is designed specifically for the Indian market with full compliance to local regulations. We adhere to India's Personal Data Protection Act, maintain data residency within India, and ensure all processing meets Indian privacy standards. Our platform complies with Indian labor laws regarding employee monitoring, requires explicit consent for all data collection, and provides employees with full data control rights. We also support integration with Indian HRIS platforms like Keka, Darwinbox, and local payroll systems.",
+    category: "compliance"
+  },
+  {
+    question: "What is the pricing structure for corporate wellness programs?",
+    answer: "Sigma Life offers transparent, competitive pricing at ₹4,999 per smart ring with no hidden fees or monthly subscriptions. This includes the hardware device, enterprise dashboard access, admin controls, employee onboarding, and ongoing support. Volume discounts are available for orders of 50+ devices. Additional services include custom integration (quoted separately), dedicated account management for enterprise clients, and optional training sessions. We also offer pilot programs for organizations wanting to test the solution before full deployment.",
+    category: "pricing"
+  },
+  {
+    question: "How does implementation work for large organizations?",
+    answer: "Sigma Life provides comprehensive implementation support for enterprise clients. The process includes: (1) Initial consultation and pilot program design, (2) Bulk device provisioning and configuration, (3) Integration with existing HRIS and wellness platforms, (4) Employee onboarding with training sessions, (5) Admin dashboard setup with custom analytics, (6) Ongoing support and optimization. Implementation typically takes 2-4 weeks depending on organization size. We provide dedicated account management for seamless deployment and employee adoption.",
+    category: "implementation"
+  },
+  {
+    question: "What kind of ROI and business outcomes can we expect?",
+    answer: "Organizations using Sigma Life typically see significant returns: (1) 85% average engagement rate (+20% vs. industry average), (2) 92% employee satisfaction (+15% since implementation), (3) 70% program participation (+25% growth YoY), (4) Reduced healthcare costs through early intervention, (5) Improved productivity through wellness optimization, (6) Enhanced employee retention and recruitment. Case studies show companies achieving 20% reduction in healthcare spending and 30% increase in wellness program engagement within the first year.",
+    category: "roi"
+  }
+];
+
+export const FAQPage: React.FC = () => {
+  const [openFAQ, setOpenFAQ] = useState<number | null>(0);
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalType, setModalType] = useState<ModalType>('contact');
+
+  const categories = [
+    { id: 'all', name: 'All Questions', icon: '📋' },
+    { id: 'product', name: 'Product', icon: '🔗' },
+    { id: 'privacy', name: 'Privacy & Security', icon: '🔒' },
+    { id: 'comparison', name: 'Comparison', icon: '⚖️' },
+    { id: 'health', name: 'Health Metrics', icon: '💓' },
+    { id: 'compliance', name: 'Compliance', icon: '📜' },
+    { id: 'pricing', name: 'Pricing', icon: '💰' },
+    { id: 'implementation', name: 'Implementation', icon: '🚀' },
+    { id: 'roi', name: 'ROI & Outcomes', icon: '📈' }
+  ];
+
+  const openModal = (type: ModalType) => {
+    setModalType(type);
+    setIsModalOpen(true);
+  };
+
+  const filteredFAQs = selectedCategory === 'all' 
+    ? faqs 
+    : faqs.filter(faq => faq.category === selectedCategory);
+
   return (
-    <footer className="bg-sigma-midnight border-t border-white/10">
-      <div className="container mx-auto px-6 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Logo & Company Info */}
-          <div className="md:col-span-1">
-            <div className="flex items-center space-x-2 mb-4">
-              <Logo className="w-8 h-8" />
-              <span className="text-xl font-bold text-white">Sigma Life</span>
+    <div className="bg-sigma-midnight text-white min-h-screen">
+      {/* SEO Meta Tags */}
+      <title>FAQ - Sigma Life Smart Ring | Corporate Wellness Questions Answered</title>
+      <meta name="description" content="Get answers to all your questions about Sigma Life smart ring for corporate wellness. Privacy, pricing, implementation, and ROI information for Indian businesses." />
+
+      {/* Structured Data for FAQ */}
+      <script type="application/ld+json">
+        {JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": faqs.map(faq => ({
+            "@type": "Question",
+            "name": faq.question,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": faq.answer
+            }
+          }))
+        })}
+      </script>
+
+      <Header onContactClick={() => openModal('contact')} />
+      
+      {/* Hero Section */}
+      <section className="py-16 bg-graphite/30">
+        <div className="container mx-auto px-6 text-center">
+          <h1 className="text-4xl md:text-5xl font-tight font-bold mb-4">
+            Frequently Asked Questions
+          </h1>
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+            Everything you need to know about Sigma Life Smart Ring for corporate wellness programs in India
+          </p>
+        </div>
+      </section>
+
+      {/* FAQ Content */}
+      <section className="py-16">
+        <div className="container mx-auto px-6">
+          {/* Category Filter */}
+          <div className="mb-12">
+            <div className="flex flex-wrap gap-3 justify-center">
+              {categories.map((category) => (
+                <button
+                  key={category.id}
+                  onClick={() => setSelectedCategory(category.id)}
+                  className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                    selectedCategory === category.id
+                      ? 'bg-ocean-teal text-white'
+                      : 'bg-graphite text-gray-300 hover:bg-white/10'
+                  }`}
+                >
+                  {category.icon} {category.name}
+                </button>
+              ))}
             </div>
-            <p className="text-gray-400 mb-4 text-sm">
-              India's leading B2B corporate wellness platform using advanced smart ring technology for employee health analytics.
-            </p>
-            <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-white transition">
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
-                </svg>
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white transition">
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.566-1.35 2.14-2.21z"/>
-                </svg>
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white transition">
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-                </svg>
-              </a>
+          </div>
+
+          {/* FAQ List */}
+          <div className="max-w-4xl mx-auto">
+            <div className="space-y-4">
+              {filteredFAQs.map((faq, index) => (
+                <div
+                  key={index}
+                  className="bg-graphite rounded-xl border border-white/10 overflow-hidden"
+                >
+                  <button
+                    onClick={() => setOpenFAQ(openFAQ === index ? null : index)}
+                    className="w-full text-left p-6 flex justify-between items-center hover:bg-white/5 transition-colors"
+                  >
+                    <h3 className="text-lg font-semibold text-white pr-4">
+                      {faq.question}
+                    </h3>
+                    <div className={`transform transition-transform ${openFAQ === index ? 'rotate-180' : ''}`}>
+                      <svg className="w-6 h-6 text-neon-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div>
+                  </button>
+                  
+                  {openFAQ === index && (
+                    <div className="px-6 pb-6">
+                      <div className="text-gray-300 leading-relaxed">
+                        {faq.answer}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
           </div>
 
-          {/* Product */}
-          <div>
-            <h3 className="text-white font-semibold mb-4">Product</h3>
-            <ul className="space-y-2 text-sm">
-              <li><Link to="/compare" className="text-gray-400 hover:text-white transition">Compare</Link></li>
-              <li><Link to="/pricing" className="text-gray-400 hover:text-white transition">Pricing</Link></li>
-              <li><Link to="/faq" className="text-gray-400 hover:text-white transition">FAQ</Link></li>
-            </ul>
-          </div>
-
-          {/* Company */}
-          <div>
-            <h3 className="text-white font-semibold mb-4">Company</h3>
-            <ul className="space-y-2 text-sm">
-              <li><Link to="/about" className="text-gray-400 hover:text-white transition">About Us</Link></li>
-              <li><a href="mailto:contact@sigmalife.io" className="text-gray-400 hover:text-white transition">Contact</a></li>
-              <li><a href="https://wa.me/+919999999999" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition">Support</a></li>
-            </ul>
-          </div>
-
-          {/* Legal */}
-          <div>
-            <h3 className="text-white font-semibold mb-4">Legal</h3>
-            <ul className="space-y-2 text-sm">
-              <li><Link to="/privacy" className="text-gray-400 hover:text-white transition">Privacy Policy</Link></li>
-              <li><Link to="/terms" className="text-gray-400 hover:text-white transition">Terms of Service</Link></li>
-            </ul>
+          {/* Contact CTA */}
+          <div className="mt-16 text-center">
+            <div className="bg-gradient-to-r from-ocean-teal/20 to-neon-cyan/20 rounded-xl p-8 border border-ocean-teal/30">
+              <h2 className="text-2xl font-bold mb-4">Still have questions?</h2>
+              <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
+                Our team of wellness experts is here to help you understand how Sigma Life can transform your workplace wellness program.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <button
+                  onClick={() => openModal('contact')}
+                  className="bg-ocean-teal text-white px-8 py-3 rounded-lg font-semibold hover:bg-ocean-teal/90 transition"
+                >
+                  📞 Schedule Expert Consultation
+                </button>
+                <a
+                  href="https://wa.me/+919999999999?text=Hi! I have questions about Sigma Life for our corporate wellness program"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-green-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition flex items-center justify-center gap-2"
+                >
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
+                  </svg>
+                  WhatsApp Support
+                </a>
+              </div>
+            </div>
           </div>
         </div>
+      </section>
 
-        <div className="border-t border-white/10 pt-8 mt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-            <p className="text-gray-400 text-sm">
-              © 2024 Sigma Life Technologies Pvt. Ltd. All rights reserved.
-            </p>
-            <div className="flex items-center space-x-4 text-sm text-gray-400">
-              <span>🇮🇳 Made in India</span>
-              <span>•</span>
-              <span>ISO 27001 Certified</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </footer>
+      <Footer />
+      <WhatsAppFloat />
+      <StickyCTA onContactClick={() => openModal('contact')} />
+
+      {/* Contact Modal */}
+      {isModalOpen && (
+        <ContactModal 
+          initialMode={modalType} 
+          onClose={() => setIsModalOpen(false)} 
+        />
+      )}
+    </div>
   );
 };
