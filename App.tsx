@@ -7,7 +7,6 @@ import { IntelligentFeatures } from './components/IntelligentFeatures';
 import { EmployerSolutions } from './components/EmployerSolutions';
 import { TrustAndSecurity } from './components/TrustAndSecurity';
 import { RoiMetrics } from './components/RoiMetrics';
-import { CaseStudies } from './components/CaseStudies';
 import { CtaSection } from './components/CtaSection';
 import { Footer } from './components/Footer';
 import { ContactModal } from './components/ContactModal';
@@ -54,7 +53,6 @@ export const App: React.FC = () => {
             <EmployerSolutions />
             <TrustAndSecurity />
             <RoiMetrics />
-            <CaseStudies />
             <CtaSection onContactClick={() => openModal('contact')} />
           </main>
           <Footer />

@@ -25,7 +25,6 @@ export const Footer: React.FC = () => {
             <h3 className="text-sm font-semibold text-white tracking-wider uppercase">Company</h3>
             <ul className="mt-4 space-y-2">
               <li><Link to="/about" className="text-gray-400 hover:text-white text-sm">About Us</Link></li>
-              <li><Link to="/case-studies" className="text-gray-400 hover:text-white text-sm">Case Studies</Link></li>
               <li><Link to="/blog" className="text-gray-400 hover:text-white text-sm">Blog</Link></li>
             </ul>
           </div>

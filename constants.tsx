@@ -9,7 +9,6 @@ export const NAV_LINKS = [
   { name: 'Security', href: '/#security' },
   { name: 'ROI', href: '/#roi' },
   { name: 'Compare', href: '/compare' },
-  { name: 'Case Studies', href: '/case-studies' },
   { name: 'FAQ', href: '/faq' },
 ];
 
