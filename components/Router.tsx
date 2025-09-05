@@ -1,5 +1,5 @@
 import React from 'react';
-import { App } from './App';
+import { App } from '../App';
 import { AboutPage } from './pages/AboutPage';
 import { ComparePage } from './pages/ComparePage';
 import { CaseStudiesPage } from './pages/CaseStudiesPage';
