@@ -15,25 +15,25 @@ export const Hero: React.FC<HeroProps> = ({ onContactClick, onWaitlistClick }) =
         ></div>
         <div className="container mx-auto px-6 relative">
             <h1 className="text-4xl md:text-6xl font-tight font-extrabold text-transparent bg-clip-text bg-gradient-to-br from-white to-gray-400 leading-tight">
-              India's #1 B2B Corporate Wellness Platform
+              Sigma Life for Employers
               <br/>
-              <span className="text-4xl md:text-5xl">Smart Ring Technology for Employee Health</span>
+              <span className="text-4xl md:text-5xl">Smart Health, Simplified</span>
             </h1>
             <p className="mt-6 max-w-2xl mx-auto text-lg text-gray-300">
-              Transform your workplace wellness program with India's most trusted B2B smart ring platform. Privacy-first wearable device technology that boosts employee engagement by 85% while reducing healthcare costs by 20%.
+              A screen-free smart ring that can support employee wellness and productivity with clear, privacy-first insights.
             </p>
             <div className="mt-10 flex flex-col sm:flex-row justify-center items-center gap-4">
               <button
                 onClick={onContactClick}
-                className="w-full sm:w-auto bg-gradient-to-r from-ocean-teal to-neon-cyan text-sigma-midnight font-bold py-4 px-8 rounded-lg hover:opacity-90 transition-all duration-300 transform hover:scale-110 shadow-lg shadow-neon-cyan/20 animate-pulse"
+                className="w-full sm:w-auto bg-gradient-to-r from-ocean-teal to-neon-cyan text-sigma-midnight font-bold py-4 px-8 rounded-lg hover:opacity-90 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-neon-cyan/20 animate-pulse"
               >
-                📅 Book Free Demo • ₹4,999 per device
+                📅 Book Free Demo • ₹4,999
               </button>
               <button
                 onClick={onWaitlistClick}
-                className="w-full sm:w-auto bg-graphite text-white font-semibold py-4 px-8 rounded-lg border border-white/20 hover:bg-white/10 transition-all duration-300 transform hover:scale-105"
+                className="w-full sm:w-auto bg-graphite text-white font-semibold py-4 px-8 rounded-lg border border-white/20 hover:bg-white/10 transition-colors"
               >
-                💼 Join Enterprise Waitlist
+                Join Enterprise Waitlist
               </button>
             </div>
             
@@ -41,29 +41,29 @@ export const Hero: React.FC<HeroProps> = ({ onContactClick, onWaitlistClick }) =
             <div className="mt-12 flex flex-wrap justify-center items-center gap-8 text-sm text-gray-400 opacity-75">
                 <div className="flex items-center gap-2">
                     <span className="text-green-400">✅</span>
-                    <span>GDPR & Indian Privacy Compliant</span>
+                    <span>GDPR Compliant</span>
                 </div>
                 <div className="flex items-center gap-2">
                     <span className="text-green-400">✅</span>
-                    <span>Complete India Data Residency</span>
+                    <span>India Data Residency</span>
                 </div>
                 <div className="flex items-center gap-2">
                     <span className="text-green-400">✅</span>
-                    <span>SOC 2 Type II Certified</span>
+                    <span>SOC 2 Type II</span>
                 </div>
                 <div className="flex items-center gap-2">
                     <span className="text-green-400">✅</span>
-                    <span>6+ Days Battery • No Monthly Fees</span>
+                    <span>6 Days Battery Life</span>
                 </div>
             </div>
             
             <div className="mt-16 text-sm text-gray-400">
-                <p>Trusted by 50+ leading Indian enterprises</p>
+                <p>Trusted by forward-thinking organizations</p>
                 <div className="flex justify-center items-center space-x-8 mt-4 opacity-50">
-                    <span>TechCorp Solutions</span>
-                    <span>HealthFirst Insurance</span>
-                    <span>Global Retail Chain</span>
-                    <span>Innovate Manufacturing</span>
+                    <span>TechCorp</span>
+                    <span>HealthFirst</span>
+                    <span>Global Retail</span>
+                    <span>Innovate Inc.</span>
                 </div>
             </div>
         </div>

@@ -8,11 +8,12 @@ import { ModalType } from '../../types';
 
 const faqs = [
   {
-    question: "What is Sigma Life Smart Ring and how does it work for B2B corporate wellness?",
-    answer: "Sigma Life Smart Ring is India's leading B2B corporate wellness platform using advanced wearable device technology specifically designed for enterprise employee health programs. The smart ring continuously monitors key employee health metrics including heart rate, heart rate variability (HRV), sleep patterns, activity levels, and stress management indicators through dual-chip sensors with 6+ days battery life. Our platform provides real-time wellness insights to employees while delivering anonymized, aggregated workforce analytics to employers for data-driven wellness program optimization. Unlike consumer rings, Sigma Life is purpose-built for Indian corporate environments with complete GDPR compliance and local data residency.",
+    question: "What is Sigma Life Smart Ring and how does it work?",
+    answer: "Sigma Life Smart Ring is India's leading B2B corporate wellness platform using advanced wearable device technology. The smart ring continuously monitors employee health metrics including heart rate, heart rate variability (HRV), sleep patterns, activity levels, and stress management indicators. Using dual-chip sensors and up to 6 days of battery life, it provides real-time wellness insights while maintaining complete privacy. The ring connects to our secure platform that delivers anonymized, aggregated analytics to employers for workforce wellness optimization.",
     category: "product"
   },
   {
+    question: "How do you protect employee data and ensure privacy compliance?",
     answer: "Sigma Life prioritizes data privacy and security through multiple layers of protection. All employee health data is encrypted in transit and at rest using industry-leading protocols. We maintain strict GDPR compliance and Indian data residency requirements. Individual employee data is NEVER shared with employers - only anonymized, aggregated insights are provided to organizations. We're SOC 2 Type II compliant (in progress) and offer BAA evaluation for qualified enterprise partners. Employees maintain full control over their personal health information.",
     category: "privacy"
   },
