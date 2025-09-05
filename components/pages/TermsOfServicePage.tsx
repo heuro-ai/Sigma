@@ -2,266 +2,204 @@ import React, { useState } from 'react';
 import { Header } from '../Header';
 import { Footer } from '../Footer';
 import { WhatsAppFloat } from '../WhatsAppFloat';
+import { StickyCTA } from '../StickyCTA';
 import { ContactModal } from '../ContactModal';
 import { ModalType } from '../../types';
 
-export const TermsOfServicePage: React.FC = () => {
+const faqs = [
+  {
+    question: "What is Sigma Life Smart Ring and how does it work for B2B corporate wellness?",
+    answer: "Sigma Life Smart Ring is India's leading B2B corporate wellness platform using advanced wearable device technology specifically designed for enterprise employee health programs. The smart ring continuously monitors key employee health metrics including heart rate, heart rate variability (HRV), sleep patterns, activity levels, and stress management indicators through dual-chip sensors with 6+ days battery life. Our platform provides real-time wellness insights to employees while delivering anonymized, aggregated workforce analytics to employers for data-driven wellness program optimization. Unlike consumer rings, Sigma Life is purpose-built for Indian corporate environments with complete GDPR compliance and local data residency.",
+    category: "product"
+  },
+  {
+    category: "privacy"
+  },
+  {
+    question: "How does Sigma Life compare to Oura, Ultrahuman, and boAt smart rings?",
+    answer: "Sigma Life specifically focuses on B2B corporate wellness, unlike consumer-focused competitors. Key advantages: (1) India-based with local data residency and compliance, (2) B2B-specific features like productivity analytics and workforce insights, (3) Competitive pricing at ₹4,999 with no hidden fees, (4) Enterprise dashboard with admin controls, (5) Integration with Indian HR systems, (6) Dedicated corporate support and bulk provisioning. While Oura and Ultrahuman focus on individual consumers, Sigma Life is purpose-built for Indian corporate wellness programs.",
+    category: "comparison"
+  },
+  {
+    question: "What specific health metrics does the smart ring track?",
+    answer: "The Sigma Life Smart Ring tracks comprehensive wellness metrics: (1) Heart Rate & HRV for cardiovascular health assessment, (2) Sleep Patterns including duration, quality, and sleep stages (REM, deep, light), (3) Activity Levels measuring steps, distance, and calories burned, (4) Stress Management through physiological signal analysis, (5) Recovery & Readiness scores, (6) Productivity Index correlating wellness with performance patterns. All metrics provide trend insights and early pattern signals for proactive health management.",
+    category: "health"
+  },
+  {
+    question: "How does Indian law and compliance shape Sigma Life's approach?",
+    answer: "Sigma Life is designed specifically for the Indian market with full compliance to local regulations. We adhere to India's Personal Data Protection Act, maintain data residency within India, and ensure all processing meets Indian privacy standards. Our platform complies with Indian labor laws regarding employee monitoring, requires explicit consent for all data collection, and provides employees with full data control rights. We also support integration with Indian HRIS platforms like Keka, Darwinbox, and local payroll systems.",
+    category: "compliance"
+  },
+  {
+    question: "What is the pricing structure for corporate wellness programs?",
+    answer: "Sigma Life offers transparent, competitive pricing at ₹4,999 per smart ring with no hidden fees or monthly subscriptions. This includes the hardware device, enterprise dashboard access, admin controls, employee onboarding, and ongoing support. Volume discounts are available for orders of 50+ devices. Additional services include custom integration (quoted separately), dedicated account management for enterprise clients, and optional training sessions. We also offer pilot programs for organizations wanting to test the solution before full deployment.",
+    category: "pricing"
+  },
+  {
+    question: "How does implementation work for large organizations?",
+    answer: "Sigma Life provides comprehensive implementation support for enterprise clients. The process includes: (1) Initial consultation and pilot program design, (2) Bulk device provisioning and configuration, (3) Integration with existing HRIS and wellness platforms, (4) Employee onboarding with training sessions, (5) Admin dashboard setup with custom analytics, (6) Ongoing support and optimization. Implementation typically takes 2-4 weeks depending on organization size. We provide dedicated account management for seamless deployment and employee adoption.",
+    category: "implementation"
+  },
+  {
+    question: "What kind of ROI and business outcomes can we expect?",
+    answer: "Organizations using Sigma Life typically see significant returns: (1) 85% average engagement rate (+20% vs. industry average), (2) 92% employee satisfaction (+15% since implementation), (3) 70% program participation (+25% growth YoY), (4) Reduced healthcare costs through early intervention, (5) Improved productivity through wellness optimization, (6) Enhanced employee retention and recruitment. Case studies show companies achieving 20% reduction in healthcare spending and 30% increase in wellness program engagement within the first year.",
+    category: "roi"
+  }
+];
+
+export const FAQPage: React.FC = () => {
+  const [openFAQ, setOpenFAQ] = useState<number | null>(0);
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState<ModalType>('contact');
+
+  const categories = [
+    { id: 'all', name: 'All Questions', icon: '📋' },
+    { id: 'product', name: 'Product', icon: '🔗' },
+    { id: 'privacy', name: 'Privacy & Security', icon: '🔒' },
+    { id: 'comparison', name: 'Comparison', icon: '⚖️' },
+    { id: 'health', name: 'Health Metrics', icon: '💓' },
+    { id: 'compliance', name: 'Compliance', icon: '📜' },
+    { id: 'pricing', name: 'Pricing', icon: '💰' },
+    { id: 'implementation', name: 'Implementation', icon: '🚀' },
+    { id: 'roi', name: 'ROI & Outcomes', icon: '📈' }
+  ];
 
   const openModal = (type: ModalType) => {
     setModalType(type);
     setIsModalOpen(true);
   };
 
+  const filteredFAQs = selectedCategory === 'all' 
+    ? faqs 
+    : faqs.filter(faq => faq.category === selectedCategory);
+
   return (
     <div className="bg-sigma-midnight text-white min-h-screen">
+      {/* SEO Meta Tags */}
+      <title>FAQ - Sigma Life Smart Ring | Corporate Wellness Questions Answered</title>
+      <meta name="description" content="Get answers to all your questions about Sigma Life smart ring for corporate wellness. Privacy, pricing, implementation, and ROI information for Indian businesses." />
+
+      {/* Structured Data for FAQ */}
+      <script type="application/ld+json">
+        {JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": faqs.map(faq => ({
+            "@type": "Question",
+            "name": faq.question,
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": faq.answer
+            }
+          }))
+        })}
+      </script>
+
       <Header onContactClick={() => openModal('contact')} />
       
-      <div className="container mx-auto px-6 py-20 max-w-4xl">
-        <h1 className="text-4xl font-bold mb-8 text-center">Terms of Service</h1>
-        
-        <div className="prose prose-invert max-w-none">
-          <div className="bg-graphite p-6 rounded-xl border border-white/10 mb-8">
-            <p className="text-lg text-gray-300 mb-0">
-              <strong>Last Updated:</strong> January 4, 2025<br/>
-              <strong>Effective Date:</strong> January 4, 2025
-            </p>
+      {/* Hero Section */}
+      <section className="py-16 bg-graphite/30">
+        <div className="container mx-auto px-6 text-center">
+          <h1 className="text-4xl md:text-5xl font-tight font-bold mb-4">
+            Frequently Asked Questions
+          </h1>
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+            Everything you need to know about Sigma Life Smart Ring for corporate wellness programs in India
+          </p>
+        </div>
+      </section>
+
+      {/* FAQ Content */}
+      <section className="py-16">
+        <div className="container mx-auto px-6">
+          {/* Category Filter */}
+          <div className="mb-12">
+            <div className="flex flex-wrap gap-3 justify-center">
+              {categories.map((category) => (
+                <button
+                  key={category.id}
+                  onClick={() => setSelectedCategory(category.id)}
+                  className={`px-4 py-2 rounded-lg font-medium transition-all ${
+                    selectedCategory === category.id
+                      ? 'bg-ocean-teal text-white'
+                      : 'bg-graphite text-gray-300 hover:bg-white/10'
+                  }`}
+                >
+                  {category.icon} {category.name}
+                </button>
+              ))}
+            </div>
           </div>
 
-          <section className="mb-8">
-            <h2 className="text-2xl font-bold mb-4 text-neon-cyan">1. Acceptance of Terms</h2>
-            <p className="text-gray-300 leading-relaxed mb-4">
-              By accessing or using Sigma Life's B2B corporate wellness platform, smart ring devices, mobile applications, or website ("Services"), you agree to be bound by these Terms of Service ("Terms"). If you do not agree to these Terms, please do not use our Services.
-            </p>
-            <p className="text-gray-300 leading-relaxed">
-              These Terms apply to corporate clients ("Companies"), their employees ("Users"), and visitors to our website.
-            </p>
-          </section>
-
-          <section className="mb-8">
-            <h2 className="text-2xl font-bold mb-4 text-neon-cyan">2. Description of Services</h2>
-            
-            <h3 className="text-xl font-semibold mb-3">2.1 Platform Services</h3>
-            <p className="text-gray-300 leading-relaxed mb-4">
-              Sigma Life provides a comprehensive B2B wellness platform including:
-            </p>
-            <ul className="list-disc pl-6 text-gray-300 mb-4 space-y-1">
-              <li>Smart ring wearable devices for health monitoring</li>
-              <li>Corporate dashboard with aggregated wellness analytics</li>
-              <li>Employee mobile applications and personal health insights</li>
-              <li>AI-powered wellness coaching and recommendations</li>
-              <li>Administrative tools for program management</li>
-            </ul>
-
-            <h3 className="text-xl font-semibold mb-3">2.2 Health Monitoring</h3>
-            <p className="text-gray-300 leading-relaxed mb-4">
-              Our smart rings continuously monitor various health metrics including heart rate, sleep patterns, activity levels, and stress indicators to provide wellness insights and recommendations.
-            </p>
-
-            <div className="bg-vital-red/10 border border-vital-red/30 p-4 rounded-lg mb-4">
-              <p className="text-white font-semibold mb-2">⚠️ Medical Disclaimer:</p>
-              <p className="text-gray-300">
-                Sigma Life is not a medical device. Our Services are for wellness purposes only and are not intended for diagnosis, treatment, or monitoring of medical conditions. Always consult healthcare professionals for medical advice.
-              </p>
+          {/* FAQ List */}
+          <div className="max-w-4xl mx-auto">
+            <div className="space-y-4">
+              {filteredFAQs.map((faq, index) => (
+                <div
+                  key={index}
+                  className="bg-graphite rounded-xl border border-white/10 overflow-hidden"
+                >
+                  <button
+                    onClick={() => setOpenFAQ(openFAQ === index ? null : index)}
+                    className="w-full text-left p-6 flex justify-between items-center hover:bg-white/5 transition-colors"
+                  >
+                    <h3 className="text-lg font-semibold text-white pr-4">
+                      {faq.question}
+                    </h3>
+                    <div className={`transform transition-transform ${openFAQ === index ? 'rotate-180' : ''}`}>
+                      <svg className="w-6 h-6 text-neon-cyan" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div>
+                  </button>
+                  
+                  {openFAQ === index && (
+                    <div className="px-6 pb-6">
+                      <div className="text-gray-300 leading-relaxed">
+                        {faq.answer}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
-          </section>
+          </div>
 
-          <section className="mb-8">
-            <h2 className="text-2xl font-bold mb-4 text-neon-cyan">3. Corporate Client Responsibilities</h2>
-            
-            <h3 className="text-xl font-semibold mb-3">3.1 Account Management</h3>
-            <ul className="list-disc pl-6 text-gray-300 mb-4 space-y-1">
-              <li>Maintain accurate corporate account information</li>
-              <li>Ensure authorized personnel access administrative features</li>
-              <li>Implement proper device distribution and management</li>
-              <li>Comply with applicable labor laws and regulations</li>
-            </ul>
-
-            <h3 className="text-xl font-semibold mb-3">3.2 Employee Consent and Privacy</h3>
-            <ul className="list-disc pl-6 text-gray-300 mb-4 space-y-1">
-              <li>Obtain proper employee consent before program enrollment</li>
-              <li>Inform employees about data collection and use</li>
-              <li>Respect employee rights to opt-out or discontinue participation</li>
-              <li>Ensure no penalties for non-participation in wellness programs</li>
-            </ul>
-
-            <h3 className="text-xl font-semibold mb-3">3.3 Payment and Billing</h3>
-            <ul className="list-disc pl-6 text-gray-300 mb-4 space-y-1">
-              <li>Pay fees according to agreed pricing and payment terms</li>
-              <li>Maintain current billing information</li>
-              <li>Report billing discrepancies within 30 days</li>
-            </ul>
-          </section>
-
-          <section className="mb-8">
-            <h2 className="text-2xl font-bold mb-4 text-neon-cyan">4. Employee User Responsibilities</h2>
-            
-            <h3 className="text-xl font-semibold mb-3">4.1 Device Care and Usage</h3>
-            <ul className="list-disc pl-6 text-gray-300 mb-4 space-y-1">
-              <li>Use smart ring devices according to provided instructions</li>
-              <li>Report device issues, damage, or loss promptly</li>
-              <li>Return devices upon employment termination or program exit</li>
-              <li>Keep devices clean and properly maintained</li>
-            </ul>
-
-            <h3 className="text-xl font-semibold mb-3">4.2 Data Accuracy</h3>
-            <ul className="list-disc pl-6 text-gray-300 mb-4 space-y-1">
-              <li>Provide accurate personal information for account setup</li>
-              <li>Update health information relevant to device usage</li>
-              <li>Use devices consistently for accurate health monitoring</li>
-            </ul>
-
-            <h3 className="text-xl font-semibold mb-3">4.3 Appropriate Use</h3>
-            <ul className="list-disc pl-6 text-gray-300 mb-4 space-y-1">
-              <li>Use Services for personal wellness purposes only</li>
-              <li>Not attempt to reverse engineer or tamper with devices</li>
-              <li>Respect other users' privacy and data confidentiality</li>
-              <li>Report security concerns or unauthorized access</li>
-            </ul>
-          </section>
-
-          <section className="mb-8">
-            <h2 className="text-2xl font-bold mb-4 text-neon-cyan">5. Intellectual Property</h2>
-            
-            <h3 className="text-xl font-semibold mb-3">5.1 Sigma Life Property</h3>
-            <p className="text-gray-300 leading-relaxed mb-4">
-              All intellectual property rights in the Services, including software, algorithms, designs, trademarks, and proprietary technology, remain the exclusive property of Sigma Life.
-            </p>
-
-            <h3 className="text-xl font-semibold mb-3">5.2 User Data Rights</h3>
-            <p className="text-gray-300 leading-relaxed mb-4">
-              Users retain ownership of their personal health data. By using our Services, you grant us a limited license to process this data solely to provide the agreed Services.
-            </p>
-
-            <h3 className="text-xl font-semibold mb-3">5.3 Aggregated Data</h3>
-            <p className="text-gray-300 leading-relaxed mb-4">
-              We may use anonymized, aggregated data derived from the Services for research, product improvement, and industry insights, provided individual privacy is protected.
-            </p>
-          </section>
-
-          <section className="mb-8">
-            <h2 className="text-2xl font-bold mb-4 text-neon-cyan">6. Privacy and Data Protection</h2>
-            <p className="text-gray-300 leading-relaxed mb-4">
-              Data collection, use, and protection are governed by our Privacy Policy, which forms an integral part of these Terms. Key principles include:
-            </p>
-            <ul className="list-disc pl-6 text-gray-300 mb-4 space-y-1">
-              <li>Individual health data is never shared with employers</li>
-              <li>Only aggregated, anonymized insights are provided to companies</li>
-              <li>All data is stored within India for data sovereignty</li>
-              <li>Users maintain full control over their personal health data</li>
-              <li>Comprehensive security measures protect all information</li>
-            </ul>
-          </section>
-
-          <section className="mb-8">
-            <h2 className="text-2xl font-bold mb-4 text-neon-cyan">7. Service Availability and Support</h2>
-            
-            <h3 className="text-xl font-semibold mb-3">7.1 Service Uptime</h3>
-            <p className="text-gray-300 leading-relaxed mb-4">
-              We strive to maintain 99.5% uptime for our platform Services, excluding planned maintenance windows and circumstances beyond our control.
-            </p>
-
-            <h3 className="text-xl font-semibold mb-3">7.2 Support Services</h3>
-            <ul className="list-disc pl-6 text-gray-300 mb-4 space-y-1">
-              <li>Technical support during business hours (9 AM - 8 PM IST)</li>
-              <li>Emergency support for critical issues</li>
-              <li>Training and onboarding assistance for corporate clients</li>
-              <li>Regular platform updates and feature enhancements</li>
-            </ul>
-
-            <h3 className="text-xl font-semibold mb-3">7.3 Planned Maintenance</h3>
-            <p className="text-gray-300 leading-relaxed mb-4">
-              We will provide reasonable notice for planned maintenance that may affect Service availability.
-            </p>
-          </section>
-
-          <section className="mb-8">
-            <h2 className="text-2xl font-bold mb-4 text-neon-cyan">8. Limitation of Liability</h2>
-            
-            <h3 className="text-xl font-semibold mb-3">8.1 Service Disclaimers</h3>
-            <p className="text-gray-300 leading-relaxed mb-4">
-              Services are provided "as is" without warranties of any kind. We do not guarantee uninterrupted service, error-free operation, or that Services will meet all user requirements.
-            </p>
-
-            <h3 className="text-xl font-semibold mb-3">8.2 Health and Medical Disclaimers</h3>
-            <p className="text-gray-300 leading-relaxed mb-4">
-              Sigma Life Services are not intended to replace professional medical advice, diagnosis, or treatment. Users should consult healthcare providers for medical decisions.
-            </p>
-
-            <h3 className="text-xl font-semibold mb-3">8.3 Liability Limits</h3>
-            <p className="text-gray-300 leading-relaxed mb-4">
-              Our liability for any claims arising from these Terms or use of Services is limited to the amount paid by the client for Services in the 12 months preceding the claim.
-            </p>
-          </section>
-
-          <section className="mb-8">
-            <h2 className="text-2xl font-bold mb-4 text-neon-cyan">9. Termination</h2>
-            
-            <h3 className="text-xl font-semibold mb-3">9.1 Corporate Client Termination</h3>
-            <p className="text-gray-300 leading-relaxed mb-4">
-              Corporate clients may terminate Services with 30 days written notice. All devices must be returned, and final billing will be processed.
-            </p>
-
-            <h3 className="text-xl font-semibold mb-3">9.2 Employee Termination</h3>
-            <p className="text-gray-300 leading-relaxed mb-4">
-              Employees may discontinue participation at any time. Personal health data will be handled according to their data retention preferences.
-            </p>
-
-            <h3 className="text-xl font-semibold mb-3">9.3 Sigma Life Termination Rights</h3>
-            <p className="text-gray-300 leading-relaxed mb-4">
-              We may terminate Services for material breach of Terms, non-payment, or violation of applicable laws, with appropriate notice and opportunity to cure.
-            </p>
-          </section>
-
-          <section className="mb-8">
-            <h2 className="text-2xl font-bold mb-4 text-neon-cyan">10. Governing Law</h2>
-            <p className="text-gray-300 leading-relaxed mb-4">
-              These Terms are governed by the laws of India. Any disputes will be resolved through arbitration in accordance with Indian arbitration laws, with proceedings conducted in New Delhi.
-            </p>
-          </section>
-
-          <section className="mb-8">
-            <h2 className="text-2xl font-bold mb-4 text-neon-cyan">11. Contact Information</h2>
-            <div className="bg-graphite p-6 rounded-xl border border-white/10">
-              <h3 className="text-xl font-semibold mb-4">Legal and Compliance</h3>
-              <p className="text-gray-300 mb-4">
-                For questions about these Terms or legal matters:
+          {/* Contact CTA */}
+          <div className="mt-16 text-center">
+            <div className="bg-gradient-to-r from-ocean-teal/20 to-neon-cyan/20 rounded-xl p-8 border border-ocean-teal/30">
+              <h2 className="text-2xl font-bold mb-4">Still have questions?</h2>
+              <p className="text-gray-300 mb-6 max-w-2xl mx-auto">
+                Our team of wellness experts is here to help you understand how Sigma Life can transform your workplace wellness program.
               </p>
-              <div className="space-y-2 text-gray-300">
-                <p><strong>Email:</strong> legal@sigmalife.io</p>
-                <p><strong>General Contact:</strong> entrepreneurtoolbit@gmail.com</p>
-                <p><strong>Phone:</strong> +91-9999999999</p>
-                <p><strong>Address:</strong> Sigma Life Legal Department, India</p>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <button
+                  onClick={() => openModal('contact')}
+                  className="bg-ocean-teal text-white px-8 py-3 rounded-lg font-semibold hover:bg-ocean-teal/90 transition"
+                >
+                  📞 Schedule Expert Consultation
+                </button>
+                <a
+                  href="https://wa.me/+919999999999?text=Hi! I have questions about Sigma Life for our corporate wellness program"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-green-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-green-700 transition flex items-center justify-center gap-2"
+                >
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
+                  </svg>
+                  WhatsApp Support
+                </a>
               </div>
-            </div>
-          </section>
-
-          <div className="bg-ocean-teal/20 border border-ocean-teal/30 p-6 rounded-xl text-center">
-            <h3 className="text-xl font-semibold mb-4">Questions About These Terms?</h3>
-            <p className="text-gray-300 mb-6">
-              Our legal team can help clarify any aspects of these Terms of Service.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button
-                onClick={() => openModal('contact')}
-                className="bg-ocean-teal text-white px-6 py-3 rounded-lg font-semibold hover:bg-ocean-teal/90 transition"
-              >
-                Contact Legal Team
-              </button>
-              <a
-                href="mailto:legal@sigmalife.io"
-                className="bg-graphite text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/10 border border-white/20 transition"
-              >
-                Email: legal@sigmalife.io
-              </a>
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
       <Footer />
       <WhatsAppFloat />
+      <StickyCTA onContactClick={() => openModal('contact')} />
 
       {/* Contact Modal */}
       {isModalOpen && (

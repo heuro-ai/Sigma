@@ -1,29 +1,19 @@
 User-agent: *
 Allow: /
-Allow: /about
-Allow: /blog
-Allow: /case-studies
+
+# Important pages
 Allow: /compare
-Allow: /pricing
-Allow: /demo
-Allow: /contact
-Allow: /privacy-policy
-Allow: /terms-of-service
+Allow: /pricing  
 Allow: /faq
-Allow: /sitemap.xml
+Allow: /about
+Allow: /privacy
+Allow: /terms
 
-Disallow: /admin
-Disallow: /test
-Disallow: /dev
-Disallow: /api
-Disallow: /.env
-Disallow: /node_modules
+# Disallow admin/development paths
+Disallow: /admin/
+Disallow: /dev/
+Disallow: /.git/
+Disallow: /node_modules/
 
+# Sitemap
 Sitemap: https://sigmalife.io/sitemap.xml
-
-# India-specific crawling optimization
-User-agent: Googlebot
-Crawl-delay: 1
-
-User-agent: Bingbot
-Crawl-delay: 1
