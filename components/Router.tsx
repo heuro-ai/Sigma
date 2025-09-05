@@ -3,8 +3,6 @@ import { App } from '../App';
 import { AboutPage } from './pages/AboutPage';
 import { ComparePage } from './pages/ComparePage';
 import { PricingPage } from './pages/PricingPage';
-import { BlogPage } from './pages/BlogPage';
-import { BlogPostPage } from './pages/BlogPostPage';
 import { FAQPage } from './pages/FAQPage';
 import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
 import { TermsOfServicePage } from './pages/TermsOfServicePage';
@@ -44,12 +42,6 @@ export const Router: React.FC = () => {
         return <ComparePage />;
       case '/pricing':
         return <PricingPage />;
-      case '/blog':
-        return <BlogPage />;
-      case '/blog/workplace-wellness-trends-india-2025':
-        return <BlogPostPage postId="workplace-wellness-trends" />;
-      case '/blog/smart-rings-vs-fitness-trackers-corporate':
-        return <BlogPostPage postId="smart-rings-vs-trackers" />;
       case '/faq':
         return <FAQPage />;
       case '/privacy-policy':
