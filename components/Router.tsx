@@ -34,6 +34,8 @@ export const Router: React.FC = () => {
   }, []);
 
   const renderPage = () => {
+    console.log('Current path:', currentPath); // Debug log
+    
     switch (currentPath) {
       case '/':
         return <App />;
@@ -71,6 +73,7 @@ export const Link: React.FC<LinkProps> = ({ to, children, className, onClick }) 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     if (onClick) onClick();
+    console.log('Navigating to:', to); // Debug log
     (window as any).navigate?.(to);
   };
 
