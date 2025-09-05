@@ -4,7 +4,7 @@ import React from 'react';
 import { HeartIcon, MoonIcon, ActivityIcon, BrainIcon, ShieldIcon, UserGroupIcon, ChartBarIcon, CpuChipIcon } from './components/IconComponents';
 
 export const NAV_LINKS = [
-  { name: 'Features', href: '/#features' },
+  { name: 'Features', href: '/features' },
   { name: 'Solutions', href: '/#solutions' },
   { name: 'Security', href: '/#security' },
   { name: 'ROI', href: '/#roi' },

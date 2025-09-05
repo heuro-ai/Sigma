@@ -2,6 +2,7 @@ import React from 'react';
 import { App } from '../App';
 import { AboutPage } from './pages/AboutPage';
 import { ComparePage } from './pages/ComparePage';
+import { FeaturesPage } from './pages/FeaturesPage';
 import { PricingPage } from './pages/PricingPage';
 import { FAQPage } from './pages/FAQPage';
 import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
@@ -38,6 +39,8 @@ export const Router: React.FC = () => {
         return <App />;
       case '/about':
         return <AboutPage />;
+      case '/features':
+        return <FeaturesPage />;
       case '/compare':
         return <ComparePage />;
       case '/pricing':
