@@ -14,8 +14,10 @@ import { ContactModal } from './components/ContactModal';
 import { SecurityProvider } from './contexts/SecurityContext';
 import { SecurityBoundary } from './components/SecurityBoundary';
 import { ModalType } from './types';
+import { WhatsAppFloat } from './components/WhatsAppFloat';
+import { StickyCTA } from './components/StickyCTA';
 
-const App: React.FC = () => {
+export const App: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState<ModalType>('contact');
 
@@ -74,9 +76,10 @@ const App: React.FC = () => {
             <p>Not a medical device. For wellness purposes only. Not intended for diagnosis or treatment.</p>
           </div>
         </div>
+        <WhatsAppFloat />
+        <StickyCTA onContactClick={() => openModal('contact')} />
       </SecurityBoundary>
     </SecurityProvider>
   );
 };
 
-export default App;

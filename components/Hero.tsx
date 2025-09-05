@@ -25,17 +25,38 @@ export const Hero: React.FC<HeroProps> = ({ onContactClick, onWaitlistClick }) =
             <div className="mt-10 flex flex-col sm:flex-row justify-center items-center gap-4">
               <button
                 onClick={onContactClick}
-                className="w-full sm:w-auto bg-gradient-to-r from-ocean-teal to-neon-cyan text-sigma-midnight font-bold py-3 px-8 rounded-lg hover:opacity-90 transition-opacity shadow-lg shadow-neon-cyan/20"
+                className="w-full sm:w-auto bg-gradient-to-r from-ocean-teal to-neon-cyan text-sigma-midnight font-bold py-4 px-8 rounded-lg hover:opacity-90 transition-all duration-300 transform hover:scale-105 shadow-lg shadow-neon-cyan/20 animate-pulse"
               >
-                Contact Sales
+                📅 Book Free Demo • ₹4,999
               </button>
               <button
-                onClick={onContactClick}
-                className="w-full sm:w-auto bg-graphite text-white font-semibold py-3 px-8 rounded-lg border border-white/20 hover:bg-white/10 transition-colors"
+                onClick={onWaitlistClick}
+                className="w-full sm:w-auto bg-graphite text-white font-semibold py-4 px-8 rounded-lg border border-white/20 hover:bg-white/10 transition-colors"
               >
-                Request a Demo
+                Join Enterprise Waitlist
               </button>
             </div>
+            
+            {/* Trust Signals */}
+            <div className="mt-12 flex flex-wrap justify-center items-center gap-8 text-sm text-gray-400 opacity-75">
+                <div className="flex items-center gap-2">
+                    <span className="text-green-400">✅</span>
+                    <span>GDPR Compliant</span>
+                </div>
+                <div className="flex items-center gap-2">
+                    <span className="text-green-400">✅</span>
+                    <span>India Data Residency</span>
+                </div>
+                <div className="flex items-center gap-2">
+                    <span className="text-green-400">✅</span>
+                    <span>SOC 2 Type II</span>
+                </div>
+                <div className="flex items-center gap-2">
+                    <span className="text-green-400">✅</span>
+                    <span>6 Days Battery Life</span>
+                </div>
+            </div>
+            
             <div className="mt-16 text-sm text-gray-400">
                 <p>Trusted by forward-thinking organizations</p>
                 <div className="flex justify-center items-center space-x-8 mt-4 opacity-50">

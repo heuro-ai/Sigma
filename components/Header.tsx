@@ -2,6 +2,7 @@
 import React from 'react';
 import { NAV_LINKS } from '../constants';
 import { Logo } from './IconComponents';
+import { Link } from './Router';
 
 interface HeaderProps {
   onContactClick: () => void;
@@ -11,15 +12,21 @@ export const Header: React.FC<HeaderProps> = ({ onContactClick }) => {
   return (
     <header className="sticky top-0 z-50 bg-sigma-midnight/80 backdrop-blur-lg border-b border-graphite/50">
       <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-        <a href="#" className="flex items-center space-x-2">
+        <Link to="/" className="flex items-center space-x-2">
           <Logo className="h-6 w-auto" />
-        </a>
+        </Link>
         <nav className="hidden md:flex items-center space-x-8">
           {NAV_LINKS.map((link) => (
-            <a key={link.name} href={link.href} className="text-sm font-medium text-gray-300 hover:text-white transition-colors">
+            <Link key={link.name} to={link.href} className="text-sm font-medium text-gray-300 hover:text-white transition-colors">
               {link.name}
-            </a>
+            </Link>
           ))}
+          <Link to="/pricing" className="text-sm font-medium text-gray-300 hover:text-white transition-colors">
+            Pricing
+          </Link>
+          <Link to="/about" className="text-sm font-medium text-gray-300 hover:text-white transition-colors">
+            About
+          </Link>
         </nav>
         <button
           onClick={onContactClick}

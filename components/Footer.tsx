@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { Logo } from './IconComponents';
+import { Link } from './Router';
 
 export const Footer: React.FC = () => {
   return (
@@ -14,24 +15,33 @@ export const Footer: React.FC = () => {
           <div>
             <h3 className="text-sm font-semibold text-white tracking-wider uppercase">Product</h3>
             <ul className="mt-4 space-y-2">
-              <li><a href="#features" className="text-gray-400 hover:text-white text-sm">Features</a></li>
-              <li><a href="#solutions" className="text-gray-400 hover:text-white text-sm">Solutions</a></li>
-              <li><a href="#security" className="text-gray-400 hover:text-white text-sm">Security</a></li>
+              <li><Link to="/#features" className="text-gray-400 hover:text-white text-sm">Features</Link></li>
+              <li><Link to="/compare" className="text-gray-400 hover:text-white text-sm">Compare</Link></li>
+              <li><Link to="/pricing" className="text-gray-400 hover:text-white text-sm">Pricing</Link></li>
+              <li><Link to="/faq" className="text-gray-400 hover:text-white text-sm">FAQ</Link></li>
             </ul>
           </div>
           <div>
             <h3 className="text-sm font-semibold text-white tracking-wider uppercase">Company</h3>
             <ul className="mt-4 space-y-2">
-              <li><a href="#" className="text-gray-400 hover:text-white text-sm">About Us</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white text-sm">Careers</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white text-sm">Contact Us</a></li>
+              <li><Link to="/about" className="text-gray-400 hover:text-white text-sm">About Us</Link></li>
+              <li><Link to="/case-studies" className="text-gray-400 hover:text-white text-sm">Case Studies</Link></li>
+              <li><Link to="/blog" className="text-gray-400 hover:text-white text-sm">Blog</Link></li>
             </ul>
           </div>
           <div>
             <h3 className="text-sm font-semibold text-white tracking-wider uppercase">Legal</h3>
             <ul className="mt-4 space-y-2">
-              <li><a href="#" className="text-gray-400 hover:text-white text-sm">Privacy Policy</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white text-sm">Terms of Service</a></li>
+              <li><Link to="/privacy-policy" className="text-gray-400 hover:text-white text-sm">Privacy Policy</Link></li>
+              <li><Link to="/terms-of-service" className="text-gray-400 hover:text-white text-sm">Terms of Service</Link></li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="text-sm font-semibold text-white tracking-wider uppercase">Contact</h3>
+            <ul className="mt-4 space-y-2">
+              <li><a href="mailto:entrepreneurtoolbit@gmail.com" className="text-gray-400 hover:text-white text-sm">📧 Email Us</a></li>
+              <li><a href="https://wa.me/+919999999999" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white text-sm">💬 WhatsApp</a></li>
+              <li><span className="text-gray-400 text-sm">📱 +91-9999999999</span></li>
             </ul>
           </div>
         </div>
