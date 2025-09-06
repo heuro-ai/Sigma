@@ -149,7 +149,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ initialMode, onClose
                     <form
                       name="contact"
                       method="POST"
-                      netlify
+                      data-netlify="true"
                       netlify-honeypot="bot-field"
                       action="/thank-you.html"
                       className="p-6 max-h-[70vh] overflow-y-auto space-y-4"
@@ -159,6 +159,8 @@ export const ContactModal: React.FC<ContactModalProps> = ({ initialMode, onClose
                       }}
                     >
                         <input type="hidden" name="form-name" value="contact" />
+                        <input type="hidden" name="_to" value="ab@sigmalife.io" />
+                        <input type="hidden" name="_subject" value="🔥 New Contact Form Submission - Sigma Life" />
                         <p style={{ display: 'none' }}>
                           <label>
                             Don't fill this out if you're human: <input name="bot-field" />
@@ -294,7 +296,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ initialMode, onClose
                     <form
                       name="waitlist"
                       method="POST"
-                      netlify
+                      data-netlify="true"
                       netlify-honeypot="bot-field"
                       action="/thank-you.html"
                       className="p-6 space-y-4"
@@ -303,6 +305,8 @@ export const ContactModal: React.FC<ContactModalProps> = ({ initialMode, onClose
                       }}
                     >
                         <input type="hidden" name="form-name" value="waitlist" />
+                        <input type="hidden" name="_to" value="ab@sigmalife.io" />
+                        <input type="hidden" name="_subject" value="🚀 New Waitlist Signup - Sigma Life" />
                         <p style={{ display: 'none' }}>
                           <label>
                             Don't fill this out if you're human: <input name="bot-field" />

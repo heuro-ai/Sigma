@@ -2,32 +2,83 @@
   publish = "dist"
 
 # Netlify Forms Configuration
-[forms]
-  # Configure email notifications for form submissions
-  contact.action = "/thank-you.html"
-  waitlist.action = "/thank-you.html"
+[build.environment]
+  NODE_VERSION = "18"
 
-# Email notifications configuration
+# Form settings
 [[forms]]
   name = "contact"
-  to = "ab@sigmalife.io"
-  subject = "🔥 New Contact Form Submission - Sigma Life"
+  
+  # Email notification settings
+  [forms.notifications]
+    email = "ab@sigmalife.io"
+    subject = "🔥 New Contact Form Submission - Sigma Life"
+    
+    # Custom email template
+    template = """
+    New Contact Form Submission from Sigma Life Website:
+    
+    📋 CONTACT DETAILS:
+    • Name: {{fullName}}
+    • Email: {{email}}
+    • Company: {{company}}
+    • Company Size: {{companySize}}
+    • Role: {{role}}
+    
+    📝 INTERESTS:
+    {{#interests}}
+    • {{.}}
+    {{/interests}}
+    
+    💬 MESSAGE:
+    {{message}}
+    
+    ✅ CONSENT: {{consent}}
+    
+    📅 Submitted: {{dateSubmitted}}
+    🌐 Source: {{siteUrl}}
+    
+    ---
+    Sigma Life - Corporate Wellness Platform
+    """
 
 [[forms]]
   name = "waitlist"
-  to = "ab@sigmalife.io"
-  subject = "🚀 New Waitlist Signup - Sigma Life"
+  
+  # Email notification settings
+  [forms.notifications]
+    email = "ab@sigmalife.io"
+    subject = "🚀 New Waitlist Signup - Sigma Life"
+    
+    # Custom email template
+    template = """
+    New Enterprise Waitlist Signup:
+    
+    📧 Email: {{email}}
+    📅 Submitted: {{dateSubmitted}}
+    🌐 Source: {{siteUrl}}
+    
+    ---
+    Sigma Life - Corporate Wellness Platform
+    Action: Add to enterprise waitlist
+    """
 
-# Custom redirects for SPA
+# Redirect rules for SPA
+[[redirects]]
+  from = "/thank-you"
+  to = "/thank-you.html"
+  status = 200
+
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
-  conditions = {Role = ["admin"]}
-  force = false
 
-# Handle form submissions
-[[redirects]]
-  from = "/contact-success"
-  to = "/thank-you.html"
-  status = 200
+# Security headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
