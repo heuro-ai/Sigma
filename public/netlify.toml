@@ -1,0 +1,18 @@
+[build]
+  publish = "dist"
+
+[forms]
+  # Configure email notifications for form submissions
+  [forms.contact]
+    to = "ab@sigmalife.io"
+    subject = "New Contact Form Submission - Sigma Life"
+    
+  [forms.waitlist]
+    to = "ab@sigmalife.io"
+    subject = "New Waitlist Signup - Sigma Life"
+
+# Custom form success redirect
+[[redirects]]
+  from = "/?success=true"
+  to = "/thank-you"
+  status = 200

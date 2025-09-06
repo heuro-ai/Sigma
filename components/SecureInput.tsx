@@ -11,6 +11,7 @@ interface SecureInputProps extends Omit<React.InputHTMLAttributes<HTMLInputEleme
   label?: string;
   error?: string;
   showStrengthMeter?: boolean; // For password inputs
+  name?: string; // Add name prop for form submission
 }
 
 export const SecureInput: React.FC<SecureInputProps> = ({
@@ -25,6 +26,7 @@ export const SecureInput: React.FC<SecureInputProps> = ({
   showStrengthMeter = false,
   type = 'text',
   className = '',
+  name,
   ...props
 }) => {
   const [internalError, setInternalError] = useState<string>('');
@@ -129,6 +131,7 @@ export const SecureInput: React.FC<SecureInputProps> = ({
         <input
           {...props}
           type={type}
+          name={name}
           value={value}
           onChange={handleChange}
           onBlur={handleBlur}

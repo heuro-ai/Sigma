@@ -146,11 +146,21 @@ export const ContactModal: React.FC<ContactModalProps> = ({ initialMode, onClose
                 </div>
 
                 {mode === 'contact' ? (
-                    <form onSubmit={handleContactSubmit} className="p-6 max-h-[70vh] overflow-y-auto space-y-4">
+                    <form 
+                      name="contact" 
+                      method="POST" 
+                      data-netlify="true" 
+                      action="/?success=true"
+                      onSubmit={handleContactSubmit} 
+                      className="p-6 max-h-[70vh] overflow-y-auto space-y-4"
+                    >
+                        <input type="hidden" name="form-name" value="contact" />
+                        <input type="hidden" name="to-email" value="ab@sigmalife.io" />
                         <div>
                             <SecureInput
                               label="Full Name"
                               type="text"
+                              name="fullName"
                               value={contactForm.values.fullName}
                               onChange={(value, isValid) => {
                                 contactForm.setValue('fullName', value);
@@ -165,6 +175,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ initialMode, onClose
                             <SecureInput
                               label="Business Email"
                               type="email"
+                              name="email"
                               value={contactForm.values.email}
                               onChange={(value, isValid) => {
                                 contactForm.setValue('email', value);
@@ -180,6 +191,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ initialMode, onClose
                             <SecureInput
                               label="Company"
                               type="text"
+                              name="company"
                               value={contactForm.values.company}
                               onChange={(value, isValid) => {
                                 contactForm.setValue('company', value);
@@ -194,6 +206,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ initialMode, onClose
                             <label htmlFor="companySize" className={formLabelClasses}>Company Size</label>
                             <select 
                               id="companySize" 
+                              name="companySize"
                               value={contactForm.values.companySize} 
                               onChange={(e) => {
                                 contactForm.setValue('companySize', e.target.value);
@@ -216,7 +229,14 @@ export const ContactModal: React.FC<ContactModalProps> = ({ initialMode, onClose
                              <div className="grid grid-cols-2 gap-2 mt-2">
                                 {["Pilot", "Bulk order", "Integrations", "Security review"].map(interest => (
                                     <label key={interest} className="flex items-center space-x-2 text-sm text-gray-300 cursor-pointer">
-                                        <input type="checkbox" checked={contactForm.values.interests.includes(interest)} onChange={() => handleInterestChange(interest)} className="form-checkbox bg-graphite border-white/20 text-ocean-teal focus:ring-neon-cyan" />
+                                        <input 
+                                          type="checkbox" 
+                                          name="interests"
+                                          value={interest}
+                                          checked={contactForm.values.interests.includes(interest)} 
+                                          onChange={() => handleInterestChange(interest)} 
+                                          className="form-checkbox bg-graphite border-white/20 text-ocean-teal focus:ring-neon-cyan" 
+                                        />
                                         <span>{interest}</span>
                                     </label>
                                 ))}
@@ -226,6 +246,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ initialMode, onClose
                             <label htmlFor="message" className={formLabelClasses}>Message (Optional)</label>
                             <textarea 
                               id="message" 
+                             name="message"
                               value={contactForm.values.message} 
                               onChange={(e) => contactForm.setValue('message', e.target.value)}
                               rows={3} 
@@ -240,6 +261,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ initialMode, onClose
                             <label className="flex items-center space-x-2 text-sm text-gray-400">
                                 <input 
                                   type="checkbox" 
+                                 name="consent"
                                   checked={contactForm.values.consent} 
                                   onChange={(e) => {
                                     contactForm.setValue('consent', e.target.checked);
@@ -261,13 +283,23 @@ export const ContactModal: React.FC<ContactModalProps> = ({ initialMode, onClose
                         )}
                     </form>
                 ) : (
-                    <form onSubmit={handleWaitlistSubmit} className="p-6 space-y-4">
+                    <form 
+                      name="waitlist" 
+                      method="POST" 
+                      data-netlify="true" 
+                      action="/?success=true"
+                      onSubmit={handleWaitlistSubmit} 
+                      className="p-6 space-y-4"
+                    >
+                        <input type="hidden" name="form-name" value="waitlist" />
+                        <input type="hidden" name="to-email" value="ab@sigmalife.io" />
                         <h3 className="text-lg font-bold text-white text-center">Join the Enterprise Waitlist</h3>
                         <p className="text-sm text-gray-400 text-center">Be the first to know when we expand our enterprise offerings.</p>
                          <div>
                             <SecureInput
                               label="Email Address"
                               type="email"
+                             name="email"
                               value={waitlistForm.values.email}
                               onChange={(value, isValid) => {
                                 waitlistForm.setValue('email', value);
