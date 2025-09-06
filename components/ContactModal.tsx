@@ -150,12 +150,10 @@ export const ContactModal: React.FC<ContactModalProps> = ({ initialMode, onClose
                       name="contact" 
                       method="POST" 
                       data-netlify="true" 
-                      action="/?success=true"
-                      onSubmit={handleContactSubmit} 
+                      action="/thank-you.html"
                       className="p-6 max-h-[70vh] overflow-y-auto space-y-4"
                     >
                         <input type="hidden" name="form-name" value="contact" />
-                        <input type="hidden" name="to-email" value="ab@sigmalife.io" />
                         <div>
                             <SecureInput
                               label="Full Name"
@@ -275,24 +273,19 @@ export const ContactModal: React.FC<ContactModalProps> = ({ initialMode, onClose
                                <p className="text-vital-red text-xs mt-1">{contactForm.errors.consent}</p>
                              )}
                         </div>
-                        <button type="submit" disabled={status === 'loading' || contactForm.isSubmitting} className="w-full bg-ocean-teal text-white font-semibold py-2.5 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed">
-                          {(status === 'loading' || contactForm.isSubmitting) ? 'Submitting...' : 'Submit Inquiry'}
+                        <button type="submit" className="w-full bg-ocean-teal text-white font-semibold py-2.5 rounded-lg hover:bg-ocean-teal/90 transition">
+                          Submit Inquiry
                         </button>
-                        {contactForm.submitError && (
-                          <p className="text-vital-red text-xs text-center">{contactForm.submitError}</p>
-                        )}
                     </form>
                 ) : (
                     <form 
                       name="waitlist" 
                       method="POST" 
                       data-netlify="true" 
-                      action="/?success=true"
-                      onSubmit={handleWaitlistSubmit} 
+                      action="/thank-you.html"
                       className="p-6 space-y-4"
                     >
                         <input type="hidden" name="form-name" value="waitlist" />
-                        <input type="hidden" name="to-email" value="ab@sigmalife.io" />
                         <h3 className="text-lg font-bold text-white text-center">Join the Enterprise Waitlist</h3>
                         <p className="text-sm text-gray-400 text-center">Be the first to know when we expand our enterprise offerings.</p>
                          <div>
@@ -311,12 +304,9 @@ export const ContactModal: React.FC<ContactModalProps> = ({ initialMode, onClose
                               maxLength={254}
                             />
                         </div>
-                        <button type="submit" disabled={status === 'loading' || waitlistForm.isSubmitting} className="w-full bg-ocean-teal text-white font-semibold py-2.5 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed">
-                          {(status === 'loading' || waitlistForm.isSubmitting) ? 'Joining...' : 'Join Waitlist'}
+                        <button type="submit" className="w-full bg-ocean-teal text-white font-semibold py-2.5 rounded-lg hover:bg-ocean-teal/90 transition">
+                          Join Waitlist
                         </button>
-                        {waitlistForm.submitError && (
-                          <p className="text-vital-red text-xs text-center">{waitlistForm.submitError}</p>
-                        )}
                     </form>
                 )}
             </>
