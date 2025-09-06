@@ -34,9 +34,12 @@ export const Router: React.FC = () => {
   }, []);
 
   const renderPage = () => {
-    console.log('Current path:', currentPath); // Debug log
+    // Normalize the path by removing trailing slashes
+    const normalizedPath = currentPath === '/' ? '/' : currentPath.replace(/\/$/, '');
     
-    switch (currentPath) {
+    console.log('Router - Current path:', normalizedPath);
+    
+    switch (normalizedPath) {
       case '/':
         return <App />;
       case '/about':
@@ -54,6 +57,7 @@ export const Router: React.FC = () => {
       case '/terms-of-service':
         return <TermsOfServicePage />;
       default:
+        console.log('Router - No match found for:', normalizedPath, '- showing 404');
         return <NotFoundPage />;
     }
   };
@@ -73,7 +77,7 @@ export const Link: React.FC<LinkProps> = ({ to, children, className, onClick }) 
   const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     if (onClick) onClick();
-    console.log('Navigating to:', to); // Debug log
+    console.log('Link - Navigating to:', to);
     (window as any).navigate?.(to);
   };
 
