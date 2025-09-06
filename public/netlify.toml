@@ -1,26 +1,33 @@
 [build]
   publish = "dist"
 
+# Netlify Forms Configuration
 [forms]
   # Configure email notifications for form submissions
-  contact = "/thank-you.html"
-  waitlist = "/thank-you.html"
+  contact.action = "/thank-you.html"
+  waitlist.action = "/thank-you.html"
 
-# Form notifications
-[[plugins]]
-  package = "netlify-plugin-form-submissions"
-
-# Email notifications
-[form.contact]
+# Email notifications configuration
+[[forms]]
+  name = "contact"
   to = "ab@sigmalife.io"
-  subject = "New Contact Form Submission - Sigma Life"
+  subject = "🔥 New Contact Form Submission - Sigma Life"
 
-[form.waitlist] 
+[[forms]]
+  name = "waitlist"
   to = "ab@sigmalife.io"
-  subject = "New Waitlist Signup - Sigma Life"
+  subject = "🚀 New Waitlist Signup - Sigma Life"
 
-# Custom redirects
+# Custom redirects for SPA
 [[redirects]]
   from = "/*"
   to = "/index.html"
+  status = 200
+  conditions = {Role = ["admin"]}
+  force = false
+
+# Handle form submissions
+[[redirects]]
+  from = "/contact-success"
+  to = "/thank-you.html"
   status = 200

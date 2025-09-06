@@ -1,0 +1,28 @@
+@@ .. @@
+   <script defer data-domain="YOUR_PLAUSIBLE_DOMAIN" src="https://plausible.io/js/script.js"></script>
++  
++  <!-- Hidden Netlify Forms for detection -->
++  <form name="contact" netlify netlify-honeypot="bot-field" hidden>
++    <input type="text" name="fullName" />
++    <input type="email" name="email" />
++    <input type="text" name="company" />
++    <select name="companySize">
++      <option value="50-249">50-249 employees</option>
++      <option value="250-999">250-999 employees</option>
++      <option value="1k-5k">1,000-5,000 employees</option>
++      <option value="5k+">5,000+ employees</option>
++    </select>
++    <input type="text" name="role" />
++    <input type="checkbox" name="interests" value="Pilot" />
++    <input type="checkbox" name="interests" value="Bulk order" />
++    <input type="checkbox" name="interests" value="Integrations" />
++    <input type="checkbox" name="interests" value="Security review" />
++    <textarea name="message"></textarea>
++    <input type="checkbox" name="consent" />
++  </form>
++  
++  <form name="waitlist" netlify netlify-honeypot="bot-field" hidden>
++    <input type="email" name="email" />
++  </form>
+ </body>
+ </html>

@@ -146,14 +146,24 @@ export const ContactModal: React.FC<ContactModalProps> = ({ initialMode, onClose
                 </div>
 
                 {mode === 'contact' ? (
-                    <form 
-                      name="contact" 
-                      method="POST" 
-                      data-netlify="true" 
+                    <form
+                      name="contact"
+                      method="POST"
+                      netlify
+                      netlify-honeypot="bot-field"
                       action="/thank-you.html"
                       className="p-6 max-h-[70vh] overflow-y-auto space-y-4"
+                      onSubmit={(e) => {
+                        // Let Netlify handle the form submission
+                        console.log('Form submitting to Netlify...');
+                      }}
                     >
                         <input type="hidden" name="form-name" value="contact" />
+                        <p style={{ display: 'none' }}>
+                          <label>
+                            Don't fill this out if you're human: <input name="bot-field" />
+                          </label>
+                        </p>
                         <div>
                             <SecureInput
                               label="Full Name"
@@ -210,6 +220,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ initialMode, onClose
                                 contactForm.setValue('companySize', e.target.value);
                                 contactForm.setFieldTouched('companySize');
                               }}
+                              required
                               className="w-full bg-graphite border border-white/20 rounded-lg px-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-neon-cyan transition"
                             >
                                 <option value="">Select an option</option>
@@ -230,6 +241,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ initialMode, onClose
                                         <input 
                                           type="checkbox" 
                                           name="interests"
+                                          id={`interest-${interest}`}
                                           value={interest}
                                           checked={contactForm.values.interests.includes(interest)} 
                                           onChange={() => handleInterestChange(interest)} 
@@ -244,7 +256,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ initialMode, onClose
                             <label htmlFor="message" className={formLabelClasses}>Message (Optional)</label>
                             <textarea 
                               id="message" 
-                             name="message"
+                              name="message"
                               value={contactForm.values.message} 
                               onChange={(e) => contactForm.setValue('message', e.target.value)}
                               rows={3} 
@@ -259,12 +271,13 @@ export const ContactModal: React.FC<ContactModalProps> = ({ initialMode, onClose
                             <label className="flex items-center space-x-2 text-sm text-gray-400">
                                 <input 
                                   type="checkbox" 
-                                 name="consent"
+                                  name="consent"
                                   checked={contactForm.values.consent} 
                                   onChange={(e) => {
                                     contactForm.setValue('consent', e.target.checked);
                                     contactForm.setFieldTouched('consent');
                                   }}
+                                  required
                                   className="form-checkbox bg-graphite border-white/20 text-ocean-teal focus:ring-neon-cyan"
                                 />
                                 <span>I agree to Sigma Life's terms and privacy policy.</span>
@@ -274,25 +287,34 @@ export const ContactModal: React.FC<ContactModalProps> = ({ initialMode, onClose
                              )}
                         </div>
                         <button type="submit" className="w-full bg-ocean-teal text-white font-semibold py-2.5 rounded-lg hover:bg-ocean-teal/90 transition">
-                          Submit Inquiry
+                          {status === 'loading' ? 'Submitting...' : 'Submit Inquiry'}
                         </button>
                     </form>
                 ) : (
-                    <form 
-                      name="waitlist" 
-                      method="POST" 
-                      data-netlify="true" 
+                    <form
+                      name="waitlist"
+                      method="POST"
+                      netlify
+                      netlify-honeypot="bot-field"
                       action="/thank-you.html"
                       className="p-6 space-y-4"
+                      onSubmit={(e) => {
+                        console.log('Waitlist form submitting to Netlify...');
+                      }}
                     >
                         <input type="hidden" name="form-name" value="waitlist" />
+                        <p style={{ display: 'none' }}>
+                          <label>
+                            Don't fill this out if you're human: <input name="bot-field" />
+                          </label>
+                        </p>
                         <h3 className="text-lg font-bold text-white text-center">Join the Enterprise Waitlist</h3>
                         <p className="text-sm text-gray-400 text-center">Be the first to know when we expand our enterprise offerings.</p>
                          <div>
                             <SecureInput
                               label="Email Address"
                               type="email"
-                             name="email"
+                              name="email"
                               value={waitlistForm.values.email}
                               onChange={(value, isValid) => {
                                 waitlistForm.setValue('email', value);
@@ -305,7 +327,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ initialMode, onClose
                             />
                         </div>
                         <button type="submit" className="w-full bg-ocean-teal text-white font-semibold py-2.5 rounded-lg hover:bg-ocean-teal/90 transition">
-                          Join Waitlist
+                          {status === 'loading' ? 'Submitting...' : 'Join Waitlist'}
                         </button>
                     </form>
                 )}
